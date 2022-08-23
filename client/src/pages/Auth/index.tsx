@@ -4,6 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { ToastContainer, toast } from "react-toastify";
 import {socket} from "../../socket";
+import 'react-toastify/dist/ReactToastify.css'
 import 'react-toastify/dist/ReactToastify.minimal.css';
 import Title from "antd/lib/typography/Title";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
@@ -169,6 +170,7 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
                         }}>Чат-комната</Title>
                         <div style={{display: 'flex', alignItems: 'center'}}>
                             <Select
+                                value={values.selectedRoom}
                                 placeholder="Выберите чат-комнату"
                                 showArrow={true}
                                 style={{

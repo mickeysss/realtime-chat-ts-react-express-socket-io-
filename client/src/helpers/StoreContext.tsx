@@ -44,7 +44,7 @@ interface IActions{
 }
 
 
-const StoreContext = createContext<IinitialValue>(initialValue)
+const StoreContext = createContext<IInitialValue>(initialValue)
 const ActionContext = createContext<IActions>({} as unknown as IActions)
 
 export const StoreContextProvider = ({ children }:any) => {
