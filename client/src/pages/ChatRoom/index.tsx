@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import styled from "styled-components";
 import { SendOutlined } from '@ant-design/icons';
-import { useDate } from './useDate';
+import { useDate } from '../../helpers/useDate';
 
 export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,removedChat,sendRemoveEvent}: any) => {
 	const navigate = useNavigate()
