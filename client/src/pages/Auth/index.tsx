@@ -19,7 +19,7 @@ interface IAuth{
     removedChat: boolean
 }
 
-export const Auth = ({onLogin,removedChat}: IRegister): React.ReactElement => {
+export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
     const [rooms, setRooms] = useState([{
         roomName: '',
         roomId: ''
