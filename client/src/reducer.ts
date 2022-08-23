@@ -1,13 +1,18 @@
-const reducer = (state: any, action: any) => {
+const reducer = (state: any,action:any) => {
 	switch (action.type) {
 		case 'JOINED':
 			return {
 				...state,
+				...action.payload,
 				joined: true,
-				userName: action.payload.userName,
-				roomName: action.payload.roomName,
-				roomObj: action.payload.roomObj,
 			};
+
+		case 'REMOVE_ROOM': {
+			return {
+				...state,
+				...action.payload
+			}
+		}
 
 		case 'SET_DATA':
 			return {

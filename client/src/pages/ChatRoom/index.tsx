@@ -1,20 +1,31 @@
-import React, {MutableRefObject, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {useNavigate} from "react-router-dom";
+import styled from "styled-components";
 import {ToastContainer,toast} from "react-toastify";
 import {socket} from "../../socket";
-import {Button, Collapse, Input} from "antd";
-import {useNavigate} from "react-router-dom";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
-import styled from "styled-components";
+import {Button, Collapse} from "antd";
 import { SendOutlined } from '@ant-design/icons';
-import { useDate } from '../../helpers/useDate';
+import {useAction} from "../../helpers/StoreContext";
 
-export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,removedChat,sendRemoveEvent}: any) => {
-	const navigate = useNavigate()
-	const [rooms,setRooms] = useState('')
+interface IChatRoom{
+	isAdmin: boolean
+	userName: string
+	roomObj: {[key:string]: string}
+	users: string[]
+	messages: {[key:string]: string}[]
+	addMessage: string
+	removedChat: boolean
+}
+
+export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,removedChat}: IChatRoom) => {
 	const [messageValue, setMessageValue] = useState('');
 	const messagesRef = useRef<null | HTMLDivElement>(null)
+	const navigate = useNavigate()
+	const {sendRemoveEvent} = useAction()
+
 	const { roomName } = roomObj
-	console.log(roomObj)
+
 	const onSendMessage = () => {
 		if(messageValue){
 			socket.emit("ROOM:NEW_MESSAGE", {
@@ -27,34 +38,31 @@ export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (messagesRef.current) {
 			messagesRef.current.scrollTo(0, 99999);
 		}
 	}, [messages]);
 
-	isAdmin && toast.error(
-		"Aдмин вошел в комнату",
-	);
+	useEffect(() => {
+		isAdmin && toast.info(
+			"Aдмин вошел в комнату",
+		);
+	},[isAdmin])
 
-	// const sendRemoveEvent = (e: { preventDefault: () => void; }) => {
-	// 	e.preventDefault()
-	// 	const deleteRoom = true
-	// 	socket.emit('ROOM:DELETE_ADMIN', {roomName,deleteRoom});
-	// }
 
-	if(removedChat) {
-		toast.error("Админ удалил чат");
-		setTimeout(() => {
-			navigate('/')
-			document.location.reload();
-		},3000)
+	useEffect(() => {
+		if(removedChat){
+			const promise = Promise.resolve(toast.error("Админ удалил чат"))
+			promise.then(() => {
+				setTimeout(() =>{
+						navigate('/')
+						window.location.reload()
+				}, 3000)
+			})
+		}
+	},[removedChat])
 
-	}
-
-	console.log(userName, roomObj.roomId)
-	const {date,time} = useDate()
-	const fixedTime = `${time.toString()}`
 	return (
 		<ChatContainer>
 			<div className="flex-container">
@@ -76,11 +84,11 @@ export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,
 						</>
 					} key={''}>
 					<ul>
-						{users.map((user: any, index: any) => (
-							<div className="flex-container">
-								<li key={user + index}>{user}</li>
+						{users.map((user: string, index: number) => (
+							<div key={user + index} className="flex-container">
+								<li>{user}</li>
 								{user === roomObj.roomId && <span>(админ)</span>}
-								<span style={{width: '5px', height: '5px', background: 'green', display: 'inline-block', borderRadius: '50%'}}></span>
+								<span style={{width: '5px', height: '5px', background: 'green', display: 'inline-block', borderRadius: '50%'}}/>
 							</div>
 						))}
 					</ul>
@@ -89,13 +97,10 @@ export const ChatRoom = ({isAdmin, userName,roomObj, users, messages,addMessage,
 			</Collapse>
 			<div className="chat-messages">
 				<div ref={messagesRef} className="messages">
-					{messages.map((message: { text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; userName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, index: any) => (
+					{messages.map((message,index) => (
 						<div className={message.userName === userName ? "message-me" : 'message-other'} key={message.text + index}>
 							<span>{message.userName === userName ? 'Вы' : message.userName}</span>
 							<p>{message.text}</p>
-							{/*<div>{fixedTime}</div>*/}
-							{/*<div>{date}</div>*/}
-
 						</div>
 					))}
 				</div>

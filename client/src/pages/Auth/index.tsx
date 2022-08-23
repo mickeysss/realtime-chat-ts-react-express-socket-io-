@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate} from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {socket} from "../../socket";
 import 'react-toastify/dist/ReactToastify.minimal.css';
-
-import {Button, Collapse, Form, Input, Select} from "antd";
 import Title from "antd/lib/typography/Title";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
+import {Button, Collapse, Form, Input, Select} from "antd";
 import logoCompany from '../../assets/svg/logo-company.svg'
-import axios from "axios";
-import {socket} from "../../socket";
-import {DeleteFilled, DeleteTwoTone} from "@ant-design/icons";
-const { Option } = Select;
 
 interface IAuth{
-    onLogin: (obj: any) => Promise<void>
+    onLogin: (obj: { roomObj: { roomName: string; roomId: string }; userName: string }) => Promise<void>
     removedChat: boolean
 }
+
+const { Option } = Select;
 
 export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
     const [rooms, setRooms] = useState([{
@@ -25,13 +23,14 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
         roomId: ''
     }])
     const [clicked,setClicked] = useState(false)
-    const navigate = useNavigate();
     const [values, setValues] = useState({
         userName: "",
         rooms: [],
         newRoom: "",
         selectedRoom: ""
     });
+
+    const navigate = useNavigate();
 
     const handleSelectChange = (value: string) => {
         setValues({...values, selectedRoom: value});
@@ -61,10 +60,10 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
             return false;
         }
 
-            // else if (newRoom.length && !!rooms.filter((room) => room !== null).filter(({roomName}) => roomName as string ===  newRoom)) {
-            //                 toast.error("Комната с таким именем уже существует",);
-            //                 return false;
-        //             }
+        else if (newRoom.length && !!rooms.filter((room) => room !== null).filter(({roomName}) => roomName as string ===  newRoom)) {
+            toast.error("Комната с таким именем уже существует",);
+            return false;
+        }
         else if (!newRoom && !selectedRoom) {
             toast.error("Выберите комнату для продолжения",);
             return false;
@@ -88,11 +87,9 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
                 userName
             }
             await axios.post("/rooms", {roomObj, userName})
-                .then((res) => {
+                .then(() => {
                     onLogin(obj)
                     socket.on('ROOMS', setRooms)
-
-                    console.log(newRoom, userName)
                 })
                 .catch(e => console.log(e));
             navigate("/rooms");
@@ -109,7 +106,6 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
         },3000)
 
     }
-
 
     const onRooms =  () => {
         try{
@@ -183,13 +179,11 @@ export const Auth = ({onLogin,removedChat}: IAuth): React.ReactElement => {
                                 onChange={ (e) => handleSelectChange(e)}
                             >
                                 {[...rooms].filter((room) => room !== null).map((room,key) =>(
-                                    <>
                                         <Option key={key} name={room.roomName} value={room.roomName}>
                                             <div>
                                                 <span>{room.roomName}</span>
                                             </div>
                                         </Option>
-                                    </>
                                 ))
                                 }
                             </Select>
