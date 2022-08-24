@@ -17,6 +17,7 @@
     "ant-design": "^1.0.0",
     "antd": "^4.22.6",
     "axios": "^0.27.2",
+    "eslint-config-airbnb": "^19.0.4",
     "lint": "^0.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -56,6 +57,10 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1"
   }
 }
