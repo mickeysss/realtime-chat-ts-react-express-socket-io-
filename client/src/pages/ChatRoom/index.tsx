@@ -14,7 +14,7 @@ interface IChatRoom {
   roomObj: { [key: string]: string };
   users: string[];
   messages: { [key: string]: string }[];
-  addMessage: string;
+  addMessage: (p: { text: string; userName: string }) => void;
   removedChat: boolean;
 }
 
@@ -56,9 +56,9 @@ export const ChatRoom = ({ isAdmin, userName, roomObj, users, messages, addMessa
       promise.then(() => {
         setTimeout(() => {
           navigate('/');
-          window.location.reload();
         }, 3000);
       });
+      console.log('removedChat', removedChat);
     }
   }, [removedChat]);
 

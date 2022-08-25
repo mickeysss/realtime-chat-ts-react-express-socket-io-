@@ -36,7 +36,7 @@ interface IActions {
   setRemoved: () => void;
   setAdmin: () => void;
   onLogin: (obj: { roomObj: { roomName: string; roomId: string }; userName: string }) => Promise<void>;
-  addMessage: string;
+  addMessage: (p: { text: string; userName: string }) => void;
   setUsers: () => void;
   setRooms: () => void;
   handleResetAdmin: () => void;
