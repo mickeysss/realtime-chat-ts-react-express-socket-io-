@@ -57,17 +57,9 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
     }, [values.newRoom])
 
     const handleValidation = () => {
-        const { userName, rooms, newRoom, selectedRoom } = values
+        const { userName, newRoom, selectedRoom } = values
         if (userName.length < 3) {
             toast.error('Имя пользователя должно содержать не менее 3 букв')
-            return false
-        } else if (
-            newRoom.length &&
-            !!rooms
-                .filter((room) => room !== null)
-                .filter(({ roomName }) => (roomName as string) === newRoom)
-        ) {
-            toast.error('Комната с таким именем уже существует')
             return false
         } else if (!newRoom && !selectedRoom) {
             toast.error('Выберите комнату для продолжения')
@@ -141,7 +133,7 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
     if (removedChat) {
         toast.error('Название комнаты должно содержать не менее 3 букв .')
     }
-
+    console.log(rooms)
     return (
         <>
             <FormContainer>

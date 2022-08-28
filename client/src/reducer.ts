@@ -1,4 +1,34 @@
-const reducer = (state: any, action: any) => {
+import { IInitialValue } from './helpers/StoreContext'
+
+export type JOINTYPE = {
+    users: string[]
+    messages: string[]
+    roomObj: { roomName: string }
+    deletedRemoved: boolean
+}
+type ACTIONTYPE =
+    | {
+          type: 'JOINED'
+          payload: string | boolean | (() => void)
+      }
+    | { type: 'REMOVE_ROOM'; payload: IInitialValue }
+    | {
+          type: 'SET_DATA'
+          payload: JOINTYPE
+      }
+    | { type: 'SET_USERS'; payload: string | boolean | (() => void) }
+    | { type: 'SET_MESSAGES'; payload: string }
+    | { type: 'SET_ADMIN'; payload: boolean }
+    | {
+          type: 'SET_ROOMS'
+          payload: JOINTYPE
+      }
+    | {
+          type: 'SET_REMOVED'
+          payload: JOINTYPE
+      }
+
+const reducer = (state: IInitialValue, action: ACTIONTYPE) => {
     switch (action.type) {
         case 'JOINED':
             return {
@@ -47,7 +77,13 @@ const reducer = (state: any, action: any) => {
         case 'SET_REMOVED':
             return {
                 ...state,
-                removedChat: action.payload,
+                rooms: [
+                    ...state.rooms.filter(
+                        (room: string) =>
+                            room !== action.payload.roomObj.roomName
+                    ),
+                ],
+                removedChat: action.payload.deletedRemoved,
             }
         default:
             return state
