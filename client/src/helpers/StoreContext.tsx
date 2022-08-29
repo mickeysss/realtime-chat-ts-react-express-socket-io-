@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import reducer from '../reducer'
+import reducer, { JOINTYPE } from '../reducer'
 import { socket } from '../socket'
 
 export const useStore = () => useContext(StoreContext)
@@ -31,30 +31,29 @@ export const initialValue = {
     removedChat: false,
 }
 
-interface IActions {
-    sendRemoveEvent: () => void
+export interface IActions {
+    sendRemoveEvent: (roomObj: { [p: string]: string }) => void
     setRemoved: () => void
     setAdmin: () => void
     onLogin: (obj: {
         roomObj: { roomName: string; roomId: string }
         userName: string
     }) => Promise<void>
-    addMessage: string
+    addMessage: (p: { text: string; userName: string }) => {
+        [p: string]: string
+    }
     setUsers: () => void
     setRooms: () => void
     handleResetAdmin: () => void
 }
 
 const StoreContext = createContext<IInitialValue>(initialValue)
-const ActionContext = createContext<IActions>({} as unknown as IActions)
+const ActionContext = createContext<IActions>({} as IActions)
 
-export const StoreContextProvider = ({ children }: any) => {
+export const StoreContextProvider: React.FC = ({ children }) => {
     const navigate = useNavigate()
 
     const [state, dispatch] = useReducer(reducer, initialValue)
-
-    const { roomName } = state.roomObj
-
     const setRooms = () => {
         axios.get('/rooms').then((response) => {
             dispatch({
@@ -65,7 +64,7 @@ export const StoreContextProvider = ({ children }: any) => {
         })
     }
 
-    const setUsers = (users: string[]) => {
+    const setUsers = (users: string | boolean | (() => void)) => {
         dispatch({
             type: 'SET_USERS',
             payload: users,
@@ -79,9 +78,7 @@ export const StoreContextProvider = ({ children }: any) => {
         })
     }
 
-    const onLogin = async (obj: {
-        [key: string]: { [key: string]: string }
-    }) => {
+    const onLogin = async (obj: string | boolean | (() => void)) => {
         dispatch({
             type: 'JOINED',
             payload: obj,
@@ -102,16 +99,16 @@ export const StoreContextProvider = ({ children }: any) => {
         })
     }
 
-    const setRemoved = (deleteRoom: boolean) => {
+    const setRemoved = (data: JOINTYPE) => {
         dispatch({
             type: 'SET_REMOVED',
-            payload: deleteRoom,
+            payload: data,
         })
     }
 
-    const sendRemoveEvent = () => {
+    const sendRemoveEvent = (roomObj: IInitialValue) => {
         const deleteRoom = true
-        socket.emit('ROOM:DELETE_ADMIN', { roomName, deleteRoom })
+        socket.emit('ROOM:DELETE_ADMIN', { roomObj, deleteRoom })
         dispatch({
             type: 'REMOVE_ROOM',
             payload: initialValue,

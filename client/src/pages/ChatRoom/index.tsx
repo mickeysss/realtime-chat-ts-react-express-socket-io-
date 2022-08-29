@@ -14,7 +14,9 @@ interface IChatRoom {
     roomObj: { [key: string]: string }
     users: string[]
     messages: { [key: string]: string }[]
-    addMessage: string
+    addMessage: (p: { text: string; userName: string }) => {
+        [p: string]: string
+    }
     removedChat: boolean
 }
 
@@ -76,7 +78,10 @@ export const ChatRoom = ({
                     <h1 className="room-title">{roomObj.roomName}</h1>
                 </div>
                 {userName === roomObj.roomId && (
-                    <Button className="btn-delete" onClick={sendRemoveEvent}>
+                    <Button
+                        className="btn-delete"
+                        onClick={() => sendRemoveEvent(roomObj)}
+                    >
                         Удалить комнату
                     </Button>
                 )}
@@ -102,23 +107,25 @@ export const ChatRoom = ({
                     key={''}
                 >
                     <ul>
-                        {users.map((user: string, index: number) => (
-                            <div key={user + index} className="flex-container">
-                                <li>{user}</li>
-                                {user === roomObj.roomId && (
-                                    <span>(админ)</span>
-                                )}
-                                <span
-                                    style={{
-                                        width: '5px',
-                                        height: '5px',
-                                        background: 'green',
-                                        display: 'inline-block',
-                                        borderRadius: '50%',
-                                    }}
-                                />
-                            </div>
-                        ))}
+                        {Array.from(new Set(users)).map(
+                            (user: string, index: number) => (
+                                <div key={user} className="flex-container">
+                                    <li>{user}</li>
+                                    {user === roomObj.roomId && (
+                                        <span>(админ)</span>
+                                    )}
+                                    <span
+                                        style={{
+                                            width: '5px',
+                                            height: '5px',
+                                            background: 'green',
+                                            display: 'inline-block',
+                                            borderRadius: '50%',
+                                        }}
+                                    />
+                                </div>
+                            )
+                        )}
                     </ul>
                 </CollapsePanel>
             </Collapse>
