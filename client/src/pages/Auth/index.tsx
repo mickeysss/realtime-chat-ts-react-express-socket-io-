@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import styled from 'styled-components'
 import { ToastContainer, toast } from 'react-toastify'
 import { socket } from '../../socket'
 import 'react-toastify/dist/ReactToastify.css'
 import 'react-toastify/dist/ReactToastify.minimal.css'
-import Title from 'antd/lib/typography/Title'
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
+import Title from 'antd/lib/typography/Title'
 import { Button, Collapse, Form, Input, Select } from 'antd'
-import logoCompany from '../../assets/svg/logo-company.svg'
+import { AuthContainer } from './styles/styles'
+import logoCompany from 'assets/svg/logo-company.svg'
 
 interface IAuth {
     onLogin: (obj: {
@@ -44,10 +44,6 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [event.target.name]: event.target.value })
-    }
-
-    const onChangeCollapse = (key: string | string[]) => {
-        console.log(key)
     }
 
     useEffect(() => {
@@ -119,12 +115,6 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
     }
 
     useEffect(() => {
-        socket.on('ROOM:SET_USERS', (users) => {
-            console.log('room users', users)
-        })
-    }, [])
-
-    useEffect(() => {
         if (!clicked) {
             onRooms()
         }
@@ -133,25 +123,16 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
     if (removedChat) {
         toast.error('Название комнаты должно содержать не менее 3 букв .')
     }
-    console.log(rooms)
+
     return (
         <>
-            <FormContainer>
+            <AuthContainer>
                 <Form className={'formContainer'}>
                     <div className="brand">
                         <img src={logoCompany} alt="logo" />
                     </div>
                     <div>
-                        <Title
-                            style={{
-                                fontSize: '24px',
-                                padding: 0,
-                                marginBottom: '10px',
-                                color: 'lavender',
-                            }}
-                        >
-                            Логин
-                        </Title>
+                        <Title className="room-title">Логин</Title>
                         <Input
                             type="text"
                             placeholder="Введите логин"
@@ -160,25 +141,13 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
                         />
                     </div>
                     <div>
-                        <Title
-                            style={{
-                                fontSize: '24px',
-                                padding: 0,
-                                marginBottom: '10px',
-                                color: 'lavender',
-                            }}
-                        >
-                            Чат-комната
-                        </Title>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Title className="room-title">Чат-комната</Title>
+                        <div className="selectWrapper">
                             <Select
                                 value={values.selectedRoom}
                                 placeholder="Выберите чат-комнату"
                                 showArrow={true}
-                                style={{
-                                    width: '100%',
-                                    backgroundColor: 'black',
-                                }}
+                                className="room-selector"
                                 disabled={!!values.newRoom}
                                 onChange={(e) => handleSelectChange(e)}
                             >
@@ -198,24 +167,12 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
                             </Select>
                         </div>
                     </div>
-                    <Title
-                        style={{
-                            fontSize: '24px',
-                            padding: 0,
-                            marginBottom: '10px',
-                            color: 'lavender',
-                            margin: '0 auto',
-                        }}
-                    >
+                    <Title style={{ margin: '0 auto' }} className="room-title">
                         или
                     </Title>
-                    <Collapse onChange={onChangeCollapse}>
+                    <Collapse>
                         <CollapsePanel
-                            style={{
-                                background: 'lavender',
-                                outline: '5px',
-                                borderRadius: '5px',
-                            }}
+                            className="collapse-btn"
                             header="Создайте комнату"
                             key={''}
                         >
@@ -236,95 +193,8 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
                         Присоединится к чату
                     </Button>
                 </Form>
-            </FormContainer>
+            </AuthContainer>
             <ToastContainer />
         </>
     )
 }
-
-const FormContainer = styled.div`
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-    background: linear-gradient(
-        90deg,
-        rgba(2, 0, 36, 1) 0%,
-        rgba(121, 71, 9, 1) 36%,
-        rgba(89, 21, 74, 1) 75%,
-        rgba(5, 7, 70, 1) 100%
-    );
-
-    option {
-        background: black;
-        color: wheat;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        justify-content: center;
-        margin: 0 auto;
-        img {
-            height: 5rem;
-
-            svg {
-                path {
-                    fill: #d7be0f;
-                }
-            }
-        }
-        h1 {
-            text-transform: uppercase;
-            color: #d7be0f;
-        }
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        background-color: #2a194c;
-        border-radius: 2rem;
-        padding: 5rem 10rem;
-    }
-
-    input {
-        padding: 0.5rem;
-        border: 0.1rem solid #4e0eff;
-        border-radius: 0.4rem;
-        color: black;
-        font-size: 1rem;
-        width: 100%;
-
-        &:focus {
-            border: 0.1rem solid #997af0;
-            outline: none;
-        }
-    }
-
-    button {
-        color: white;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 0.4rem;
-        font-size: 1rem;
-
-        &:hover {
-            color: white;
-            background-color: #ffbb0e;
-        }
-    }
-
-    span {
-        a {
-            text-decoration: none;
-            font-weight: bold;
-        }
-    }
-`
