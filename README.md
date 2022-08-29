@@ -1,6 +1,6 @@
 # justice-chats-react-ts-socket-io
 
-Cтек:
+# Cтек:
 Typescript,React,NodeJS,Express 
-Стили: 
+# Стили: 
 Ant Design, styled-components
