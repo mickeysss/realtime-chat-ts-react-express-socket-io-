@@ -9,7 +9,7 @@ import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
 import Title from 'antd/lib/typography/Title'
 import { Button, Collapse, Form, Input, Select } from 'antd'
 import { AuthContainer } from './styles/styles'
-import logoCompany from 'assets/svg/logo-company.svg'
+import logoCompany from '../../assets/svg/logo-company.svg'
 
 interface IAuth {
     onLogin: (obj: {
