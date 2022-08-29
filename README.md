@@ -1,4 +1,4 @@
-# justice-chats-react-ts-socket-io
+# Justice-chats
 
 # Cтек:
 Typescript,React,NodeJS,Express, Socket IO 
