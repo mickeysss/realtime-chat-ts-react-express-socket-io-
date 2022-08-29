@@ -8,7 +8,7 @@ export const useStore = () => useContext(StoreContext)
 export const useAction = () => useContext(ActionContext)
 
 export interface IInitialValue {
-    joined: boolean
+    isEntered: boolean
     userName: string
     roomName: string
     users: never[]
@@ -20,7 +20,7 @@ export interface IInitialValue {
 }
 
 export const initialValue = {
-    joined: false,
+    isEntered: false,
     userName: '',
     roomName: '',
     users: [],
@@ -80,7 +80,7 @@ export const StoreContextProvider: React.FC = ({ children }) => {
 
     const onLogin = async (obj: string | boolean | (() => void)) => {
         dispatch({
-            type: 'JOINED',
+            type: 'ENTERED',
             payload: obj,
         })
         socket.emit('ROOM:JOIN', obj)

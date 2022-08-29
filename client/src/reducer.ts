@@ -8,7 +8,7 @@ export type JOINTYPE = {
 }
 type ACTIONTYPE =
     | {
-          type: 'JOINED'
+          type: 'ENTERED'
           payload: string | boolean | (() => void)
       }
     | { type: 'REMOVE_ROOM'; payload: IInitialValue }
@@ -30,11 +30,11 @@ type ACTIONTYPE =
 
 const reducer = (state: IInitialValue, action: ACTIONTYPE) => {
     switch (action.type) {
-        case 'JOINED':
+        case 'ENTERED':
             return {
                 ...state,
                 ...action.payload,
-                joined: true,
+                isEntered: true,
             }
 
         case 'REMOVE_ROOM': {

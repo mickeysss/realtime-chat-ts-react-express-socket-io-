@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import { Button, Collapse } from 'antd'
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
+import { SendOutlined } from '@ant-design/icons'
 import { socket } from '../../socket'
 import { useAction } from '../../helpers/StoreContext'
-import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
-import { Button, Collapse } from 'antd'
-import { SendOutlined } from '@ant-design/icons'
 import { ChatContainer } from './styles/styles'
 
 export interface IChatRoom {
@@ -71,10 +71,15 @@ export const ChatRoom = ({
         }
     }, [removedChat])
 
+    const onLeaveRoomHandler = () => {
+        navigate('/')
+        window.location.reload()
+    }
+
     return (
         <ChatContainer>
             <div className="flex-container">
-                <div>
+                <div className="room-container">
                     <span>Комната:</span>
                     <h1 className="room-title">{roomObj.roomName}</h1>
                 </div>
@@ -144,6 +149,9 @@ export const ChatRoom = ({
                     <ToastContainer />
                 </form>
             </div>
+            <Button className="btn-delete" onClick={onLeaveRoomHandler}>
+                Покинуть комнату
+            </Button>
         </ChatContainer>
     )
 }

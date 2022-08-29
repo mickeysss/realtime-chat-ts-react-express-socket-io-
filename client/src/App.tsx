@@ -14,9 +14,10 @@ const App = () => {
         handleResetAdmin()
     }, [state.isAdmin])
 
+
     return (
         <>
-            {!state.joined ? (
+            {!state.isEntered ? (
                 <Routes>
                     <Route
                         path="/"
