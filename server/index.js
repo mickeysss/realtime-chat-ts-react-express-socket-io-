@@ -29,7 +29,6 @@ app.get("/rooms/:id", (req, res) => {
 
 app.get("/rooms", (req, res) => {
   res.json(roomsArr);
-  console.log(roomsArr);
 });
 
 app.post("/rooms", (req, res) => {
@@ -51,8 +50,6 @@ app.post("/rooms", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected", socket.id);
-
   socket.on("ROOM:JOIN", ({ userName, roomObj }) => {
     const { roomName, roomId } = roomObj;
     socket.join(roomName);
@@ -70,7 +67,6 @@ io.on("connection", (socket) => {
       userName,
       text,
     };
-    console.log("obj", obj, roomName);
 
     rooms.get(roomName).get("messages").push(obj);
     socket.broadcast.to(roomName).emit("ROOM:NEW_MESSAGE", obj);
@@ -93,7 +89,6 @@ io.on("connection", (socket) => {
       if (!!checkRoom) {
         roomsArr = updatedRooms;
       }
-      console.log("removednew arr", roomsArr);
       socket.broadcast.to(roomObj.roomName).emit("ROOM:REMOVED", data);
     } else {
       return false;
@@ -110,12 +105,8 @@ io.on("connection", (socket) => {
   });
 });
 
-console.log(rooms.keys());
-
 server.listen(PORT, (err) => {
   if (err) {
     return new Error();
   }
-
-  console.log("listening on *:8002");
 });
