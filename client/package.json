@@ -1,5 +1,6 @@
 {
-  "name": "chat-app-client",
+  "name": "justice-app-client",
+  "author": "Michael Sargsyan",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
