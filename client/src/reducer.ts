@@ -1,23 +1,26 @@
-import { IInitialValue } from './helpers/StoreContext'
+import { Message, State } from './helpers/types'
 
 export type JOINTYPE = {
     users: string[]
-    messages: string[]
+    messages: Message[]
     roomObj: { roomName: string }
     deletedRemoved: boolean
 }
-type ACTIONTYPE =
+export type ACTIONTYPE =
     | {
           type: 'ENTERED'
-          payload: string | boolean | (() => void)
+          payload: {
+              roomObj: { roomName: string; roomId: string }
+              userName: string
+          }
       }
-    | { type: 'REMOVE_ROOM'; payload: IInitialValue }
+    | { type: 'REMOVE_ROOM'; payload: State }
     | {
           type: 'SET_DATA'
           payload: JOINTYPE
       }
-    | { type: 'SET_USERS'; payload: string | boolean | (() => void) }
-    | { type: 'SET_MESSAGES'; payload: string }
+    | { type: 'SET_USERS'; payload: string[] }
+    | { type: 'SET_MESSAGES'; payload: Message }
     | { type: 'SET_ADMIN'; payload: boolean }
     | {
           type: 'SET_ROOMS'
@@ -28,7 +31,7 @@ type ACTIONTYPE =
           payload: JOINTYPE
       }
 
-const reducer = (state: IInitialValue, action: ACTIONTYPE) => {
+const reducer = (state: State, action: ACTIONTYPE): State => {
     switch (action.type) {
         case 'ENTERED':
             return {

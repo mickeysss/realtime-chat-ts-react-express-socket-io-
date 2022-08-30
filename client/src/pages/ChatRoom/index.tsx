@@ -5,34 +5,16 @@ import { Button, Collapse } from 'antd'
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
 import { SendOutlined } from '@ant-design/icons'
 import { socket } from '../../socket'
-import { useAction } from '../../helpers/StoreContext'
+import { useAction, useStore } from '../../helpers/StoreContext'
 import { ChatContainer } from './styles/styles'
 
-export interface IChatRoom {
-    isAdmin: boolean
-    userName: string
-    roomObj: { [key: string]: string }
-    users: string[]
-    messages: { [key: string]: string }[]
-    addMessage: (p: { text: string; userName: string }) => {
-        [p: string]: string
-    }
-    removedChat: boolean
-}
-
-export const ChatRoom = ({
-    isAdmin,
-    userName,
-    roomObj,
-    users,
-    messages,
-    addMessage,
-    removedChat,
-}: IChatRoom) => {
+export const ChatRoom = () => {
     const [messageValue, setMessageValue] = useState('')
     const messagesRef = useRef<null | HTMLDivElement>(null)
     const navigate = useNavigate()
-    const { sendRemoveEvent } = useAction()
+    const { isAdmin, userName, roomObj, users, messages, removedChat } =
+        useStore()
+    const { sendRemoveEvent, addMessage } = useAction()
     const uniqueUsers = Array.from(new Set(users))
 
     const { roomName } = roomObj

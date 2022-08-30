@@ -10,18 +10,11 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'react-toastify/dist/ReactToastify.minimal.css'
 import { AuthContainer } from './styles/styles'
 import logoCompany from '../../assets/svg/logo-company.svg'
-
-interface IAuth {
-    onLogin: (obj: {
-        roomObj: { roomName: string; roomId: string }
-        userName: string
-    }) => Promise<void>
-    removedChat: boolean
-}
+import { useAction, useStore } from '../../helpers/StoreContext'
 
 const { Option } = Select
 
-export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
+export const Auth = (): React.ReactElement => {
     const [rooms, setRooms] = useState([
         {
             roomName: '',
@@ -35,6 +28,9 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
         newRoom: '',
         selectedRoom: '',
     })
+
+    const { removedChat } = useStore()
+    const { onLogin } = useAction()
 
     const navigate = useNavigate()
 
