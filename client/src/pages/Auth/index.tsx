@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { Button, Collapse, Form, Input, Select } from 'antd'
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
+import Title from 'antd/lib/typography/Title'
 import { ToastContainer, toast } from 'react-toastify'
 import { socket } from '../../socket'
 import 'react-toastify/dist/ReactToastify.css'
 import 'react-toastify/dist/ReactToastify.minimal.css'
-import CollapsePanel from 'antd/lib/collapse/CollapsePanel'
-import Title from 'antd/lib/typography/Title'
-import { Button, Collapse, Form, Input, Select } from 'antd'
 import { AuthContainer } from './styles/styles'
 import logoCompany from '../../assets/svg/logo-company.svg'
-
-interface IAuth {
-    onLogin: (obj: {
-        roomObj: { roomName: string; roomId: string }
-        userName: string
-    }) => Promise<void>
-    removedChat: boolean
-}
+import { useAction, useStore } from '../../helpers/StoreContext'
 
 const { Option } = Select
 
-export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
+export const Auth = (): React.ReactElement => {
     const [rooms, setRooms] = useState([
         {
             roomName: '',
@@ -35,6 +28,9 @@ export const Auth = ({ onLogin, removedChat }: IAuth): React.ReactElement => {
         newRoom: '',
         selectedRoom: '',
     })
+
+    const { removedChat } = useStore()
+    const { onLogin } = useAction()
 
     const navigate = useNavigate()
 
