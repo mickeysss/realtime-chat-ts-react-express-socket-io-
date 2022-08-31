@@ -58,7 +58,6 @@
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^3.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1"

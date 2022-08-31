@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon app.js"
   },
   "keywords": [],
   "author": "Michael Sargsyan",
