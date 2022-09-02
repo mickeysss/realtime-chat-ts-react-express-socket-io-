@@ -17,10 +17,9 @@ export const ChatRoom = () => {
     const { sendRemoveEvent, addMessage } = useAction()
     const uniqueUsers = Array.from(new Set(users))
 
-    const { roomName } = roomObj
-
     const onSendMessage = () => {
         if (messageValue) {
+            const { roomName } = roomObj
             socket.emit('ROOM:NEW_MESSAGE', {
                 userName,
                 roomName,

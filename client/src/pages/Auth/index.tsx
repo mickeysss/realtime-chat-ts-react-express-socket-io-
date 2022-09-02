@@ -12,8 +12,6 @@ import { AuthContainer } from './styles/styles'
 import logoCompany from '../../assets/svg/logo-company.svg'
 import { useAction, useStore } from '../../helpers/StoreContext'
 
-const { Option } = Select
-
 export const Auth = (): React.ReactElement => {
     const [rooms, setRooms] = useState([
         {
@@ -87,15 +85,6 @@ export const Auth = (): React.ReactElement => {
         }
     }
 
-    if (removedChat) {
-        toast.error('Админ удалил чат')
-
-        setTimeout(() => {
-            navigate('/')
-            document.location.reload()
-        }, 3000)
-    }
-
     const onRooms = () => {
         try {
             axios
@@ -133,7 +122,7 @@ export const Auth = (): React.ReactElement => {
                             type="text"
                             placeholder="Введите логин"
                             name="userName"
-                            onChange={(e) => handleChange(e)}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
@@ -145,12 +134,12 @@ export const Auth = (): React.ReactElement => {
                                 showArrow={true}
                                 className="room-selector"
                                 disabled={!!values.newRoom}
-                                onChange={(e) => handleSelectChange(e)}
+                                onChange={handleSelectChange}
                             >
-                                {[...rooms]
+                                {rooms
                                     .filter((room) => room !== null)
                                     .map((room, key) => (
-                                        <Option
+                                        <Select.Option
                                             key={key}
                                             name={room.roomName}
                                             value={room.roomName}
@@ -158,7 +147,7 @@ export const Auth = (): React.ReactElement => {
                                             <div>
                                                 <span>{room.roomName}</span>
                                             </div>
-                                        </Option>
+                                        </Select.Option>
                                     ))}
                             </Select>
                         </div>
@@ -176,16 +165,12 @@ export const Auth = (): React.ReactElement => {
                                 type="text"
                                 placeholder="Придумайте название комнаты"
                                 name="newRoom"
-                                onChange={(e) => handleChange(e)}
+                                onChange={handleChange}
                             />
                         </CollapsePanel>
                     </Collapse>
 
-                    <Button
-                        onClick={(event) => handleSubmit(event)}
-                        size="large"
-                        type="ghost"
-                    >
+                    <Button onClick={handleSubmit} size="large" type="ghost">
                         Присоединится к чату
                     </Button>
                 </Form>
