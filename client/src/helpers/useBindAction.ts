@@ -1,38 +1,37 @@
 import axios from 'axios'
 import { socket } from '../socket'
-import { JOINTYPE } from '../reducer'
-import { IActions, RoomObj, Message } from './types'
+import { Actions, RoomObj, Message, JoinType } from './types'
 import { initialValue } from './StoreContext'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const useBindAction = (dispatch: React.Dispatch<any>): IActions => {
+export const useBindAction = (dispatch: React.Dispatch<any>): Actions => {
     const navigate = useNavigate()
 
-    const setRooms = () => {
+    const setRooms = useCallback(() => {
         axios.get('/rooms').then((response) => {
             dispatch({
                 type: 'SET_ROOMS',
                 payload: response.data,
             })
         })
-    }
+    }, [])
 
-    const setUsers = (users: string[]) => {
+    const setUsers = useCallback((users: string[]) => {
         dispatch({
             type: 'SET_USERS',
             payload: users,
         })
-    }
+    },[])
 
-    const addMessage = (message: Message) => {
+    const addMessage = useCallback((message: Message) => {
         dispatch({
             type: 'SET_MESSAGES',
             payload: message,
         })
-    }
+    }, [])
 
-    const onLogin = async (obj: { roomObj: RoomObj; userName: string }) => {
+    const onLogin = useCallback(async (obj: { roomObj: RoomObj; userName: string }) => {
         dispatch({
             type: 'ENTERED',
             payload: obj,
@@ -43,39 +42,39 @@ export const useBindAction = (dispatch: React.Dispatch<any>): IActions => {
             type: 'SET_DATA',
             payload: data,
         })
-    }
+    }, [])
 
-    const setAdmin = () => {
+    const setAdmin = useCallback(() => {
         dispatch({
             type: 'SET_ADMIN',
             payload: true,
         })
-    }
+    }, [])
 
-    const setRemoved = (data: JOINTYPE) => {
+    const setRemoved = useCallback((data: JoinType) => {
         dispatch({
             type: 'SET_REMOVED',
             payload: data,
         })
-    }
+    }, [])
 
-    const sendRemoveEvent = (roomObj: RoomObj) => {
+    const sendRemoveEvent = useCallback((roomObj: RoomObj) => {
         socket.emit('ROOM:DELETE_ADMIN', { roomObj, deleteRoom: true })
         dispatch({
             type: 'REMOVE_ROOM',
             payload: initialValue,
         })
         navigate('/')
-    }
+    }, [])
 
-    const handleResetAdmin = () => {
+    const handleResetAdmin = useCallback(() => {
         setTimeout(() => {
             dispatch({
                 type: 'SET_ADMIN',
                 payload: false,
             })
         }, 0)
-    }
+    }, [])
 
     return {
         handleResetAdmin,

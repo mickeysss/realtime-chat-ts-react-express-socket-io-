@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useReducer } from 'react'
 import reducer from '../reducer'
-import { IActions, State } from './types'
+import { Actions, RoomObj, State } from './types'
 import { useBindAction } from './useBindAction'
 
 export const useStore = () => useContext(StoreContext)
@@ -13,13 +13,13 @@ export const initialValue: State = {
     users: [],
     messages: [],
     rooms: [],
-    roomObj: {},
+    roomObj: {} as RoomObj,
     isAdmin: false,
     removedChat: false,
 }
 
-const StoreContext = createContext(initialValue as State)
-const ActionContext = createContext({} as IActions)
+const StoreContext = createContext(initialValue)
+const ActionContext = createContext({} as Actions)
 
 export const StoreContextProvider: React.FC<{ children: ReactNode }> = ({
     children,

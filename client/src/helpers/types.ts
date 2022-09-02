@@ -1,7 +1,5 @@
-import { JOINTYPE } from '../reducer'
-
 export type RoomObj = {
-    roomName?: string
+    roomName: string
     roomId?: string
 }
 
@@ -22,13 +20,29 @@ export type State = {
     removedChat: boolean
 }
 
-export type IActions = {
+export type JoinType = Pick<State, 'users' | 'messages' | 'roomObj'> & {
+    deletedRemoved: boolean
+}
+
+export type Login = Pick<State, 'roomObj' | 'userName'>
+
+export type Actions = {
     sendRemoveEvent: (roomObj: RoomObj) => void
-    setRemoved: (data: JOINTYPE) => void
+    setRemoved: (data: JoinType) => void
     setAdmin: () => void
-    onLogin: (obj: { roomObj: RoomObj; userName: string }) => void
+    onLogin: (obj: Login) => void
     addMessage: (message: Message) => void
     setUsers: (users: string[]) => void
     setRooms: (roomObj: State) => void
     handleResetAdmin: () => void
 }
+
+export type ActionType =
+  | { type: 'ENTERED'; payload: Login }
+  | { type: 'REMOVE_ROOM'; payload: State }
+  | { type: 'SET_DATA'; payload: JoinType }
+  | { type: 'SET_USERS'; payload: string[] }
+  | { type: 'SET_MESSAGES'; payload: Message }
+  | { type: 'SET_ADMIN'; payload: boolean }
+  | { type: 'SET_ROOMS'; payload: JoinType }
+  | { type: 'SET_REMOVED'; payload: JoinType }

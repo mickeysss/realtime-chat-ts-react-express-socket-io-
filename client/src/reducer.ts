@@ -1,37 +1,6 @@
-import { Message, State } from './helpers/types'
+import { State, ActionType } from './helpers/types'
 
-export type JOINTYPE = {
-    users: string[]
-    messages: Message[]
-    roomObj: { roomName: string }
-    deletedRemoved: boolean
-}
-export type ACTIONTYPE =
-    | {
-          type: 'ENTERED'
-          payload: {
-              roomObj: { roomName: string; roomId: string }
-              userName: string
-          }
-      }
-    | { type: 'REMOVE_ROOM'; payload: State }
-    | {
-          type: 'SET_DATA'
-          payload: JOINTYPE
-      }
-    | { type: 'SET_USERS'; payload: string[] }
-    | { type: 'SET_MESSAGES'; payload: Message }
-    | { type: 'SET_ADMIN'; payload: boolean }
-    | {
-          type: 'SET_ROOMS'
-          payload: JOINTYPE
-      }
-    | {
-          type: 'SET_REMOVED'
-          payload: JOINTYPE
-      }
-
-const reducer = (state: State, action: ACTIONTYPE): State => {
+const reducer = (state: State, action: ActionType): State => {
     switch (action.type) {
         case 'ENTERED':
             return {
