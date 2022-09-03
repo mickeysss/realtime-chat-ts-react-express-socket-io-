@@ -6,7 +6,7 @@ import { useAction, useStore } from './helpers/StoreContext'
 import 'antd/dist/antd.css'
 import { socket } from './socket'
 
-const App = (key: string) => {
+const App = (key: {}) => {
     const state = useStore()
     const {
         setUsers,
@@ -28,7 +28,6 @@ const App = (key: string) => {
     useEffect(() => {
         handleResetAdmin()
     }, [state.isAdmin])
-
 
     return (
         <>
