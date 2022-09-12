@@ -108,7 +108,7 @@ export const Auth = (): React.ReactElement => {
     if (removedChat) {
         toast.error('Название комнаты должно содержать не менее 3 букв .')
     }
-
+    console.log('rooms', rooms)
     return (
         <>
             <AuthContainer>

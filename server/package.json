@@ -3,12 +3,11 @@
   "author": "Michael Sargsyan",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "server": "nodemon app.js"
+    "server": "nodemon server.js"
   },
   "keywords": [],
-
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.13",
@@ -16,8 +15,11 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "mongoose": "^6.5.4",
+    "moongoose": "^0.0.5",
     "nodemon": "^2.0.19",
     "socket.io": "^4.5.1",
     "ts-node": "^10.9.1"

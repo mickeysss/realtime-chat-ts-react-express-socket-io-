@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { model, Schema } = require("mongoose");
 
-const Room = new Schema({
-  roomId: { type: String, trim: true },
-  roomName: { type: String, trim: true },
-  userName: { type: String, trim: true },
+const roomSchema = new Schema({
+    roomName: String,
+    roomId: String,
+    userName: String,
 });
 
-module.exports = mongoose.model("rooms", Room);
+module.exports = model("rooms", roomSchema);
+

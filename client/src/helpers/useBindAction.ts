@@ -10,6 +10,8 @@ export const useBindAction = (dispatch: React.Dispatch<any>): Actions => {
 
     const setRooms = useCallback(() => {
         axios.get('/rooms').then((response) => {
+            console.log(response.data)
+
             dispatch({
                 type: 'SET_ROOMS',
                 payload: response.data,
@@ -22,7 +24,7 @@ export const useBindAction = (dispatch: React.Dispatch<any>): Actions => {
             type: 'SET_USERS',
             payload: users,
         })
-    },[])
+    }, [])
 
     const addMessage = useCallback((message: Message) => {
         dispatch({
@@ -31,18 +33,21 @@ export const useBindAction = (dispatch: React.Dispatch<any>): Actions => {
         })
     }, [])
 
-    const onLogin = useCallback(async (obj: { roomObj: RoomObj; userName: string }) => {
-        dispatch({
-            type: 'ENTERED',
-            payload: obj,
-        })
-        socket.emit('ROOM:JOIN', obj)
-        const { data } = await axios.get(`/rooms/${obj.roomObj.roomName}`)
-        dispatch({
-            type: 'SET_DATA',
-            payload: data,
-        })
-    }, [])
+    const onLogin = useCallback(
+        async (obj: { roomObj: RoomObj; userName: string }) => {
+            dispatch({
+                type: 'ENTERED',
+                payload: obj,
+            })
+            socket.emit('ROOM:JOIN', obj)
+            const { data } = await axios.get(`/rooms/${obj.roomObj.roomName}`)
+            dispatch({
+                type: 'SET_DATA',
+                payload: data,
+            })
+        },
+        []
+    )
 
     const setAdmin = useCallback(() => {
         dispatch({
