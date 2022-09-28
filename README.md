@@ -1,13 +1,13 @@
-# Justice-chats
-# Cтек:
+# Realtime Chat
+# Stack:
 Typescript,React,NodeJS,Express, Socket IO
 
-# Стили:
+# Styles:
 Ant Design, styled-components
 
-# Описание
-Чат комната,в которой реализована логика создания и удаления приватных комнат. При создании пользователь становится админом комнаты,ему доступна функция удаления комнаты
+# Description
+Chat room, which implements the logic of creating and deleting private rooms. When user created room, he  becomes the administrator of the room, deleting the room is only available to him
 
-При входе админа, юзерам приходит уведомления об его входе в комнату.
+When an admin enters, users receive notifications about his entry into the room.
 
-При удалении комнаты юзерам приходит уведомление об удалении комнаты и переносит на главный экран.
+When admin deleting a room, users receive a notification about the deletion of the room and transfer to the main screen.
